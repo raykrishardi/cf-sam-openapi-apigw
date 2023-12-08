@@ -6,8 +6,22 @@ Create Amazon API Gateway with OpenAPI spec with golambda and dynamodb (referenc
 ## Local Deployment
 
 ### Run on local machine
+1. Deploy the stack
 ```
 npm i -g cfn-include swagger-cli
 make build
 sam deploy --guided
+```
+
+2. Populate the DynamoDB with content based on this attribute definitions https://github.com/raykrishardi/cf-sam-openapi-apigw/blob/main/cloudformation/resources/dynamodb/animalsTable.yaml#L8-L12
+example:
+```
+id: 1
+name: Alligator
+```
+
+3. Hit the API GW
+example:
+```
+curl https://<url>/Prod/animals/1
 ```
