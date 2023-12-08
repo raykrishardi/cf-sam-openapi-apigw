@@ -14,14 +14,16 @@ sam deploy --guided
 ```
 
 2. Populate the DynamoDB with content based on this attribute definitions https://github.com/raykrishardi/cf-sam-openapi-apigw/blob/main/cloudformation/resources/dynamodb/animalsTable.yaml#L8-L12
-example:
+  
+   For example:
 ```
 id: 1
 name: Alligator
 ```
 
 3. Hit the API GW
-example:
+  
+   For example:
 ```
 curl https://<url>/Prod/animals/1
 ```
