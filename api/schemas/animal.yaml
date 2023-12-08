@@ -1,0 +1,4 @@
+type: object
+properties:
+  AnimalName:
+    $ref: '../fields/animalName.yaml'

@@ -1,0 +1,20 @@
+openapi: "3.0.3"
+info:
+  version: 1.0.0
+  title: Go Lambda API GW
+  description: Reference from https://github.com/aws-samples/cf-sam-openapi-file-organization-demo
+
+x-amazon-apigateway-request-validators:
+  all:
+    validateRequestBody: true
+    validateRequestParameters: true
+  params-only:
+    validateRequestBody: false
+    validateRequestParameters: true
+  body-only:
+    validateRequestBody: true
+    validateRequestParameters: false
+
+paths:
+  /animals/{animalId}:
+    $ref: './paths/animals/animalIdGet.yaml'

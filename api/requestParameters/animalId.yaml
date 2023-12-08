@@ -1,0 +1,5 @@
+      name: animalId
+      schema:
+         type: integer
+      required: true
+      description: Numeric ID of the animal to get

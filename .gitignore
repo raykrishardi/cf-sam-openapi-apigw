@@ -1,0 +1,7 @@
+.DS_Store
+
+# Exclude - they are rebuilt
+/api/api.yaml
+template.yaml
+.aws-sam
+samconfig.toml

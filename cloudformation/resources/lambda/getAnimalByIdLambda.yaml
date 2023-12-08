@@ -1,0 +1,19 @@
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: golambda/cmd/api/animals-by-id/
+      Handler: api
+      Runtime: go1.x
+      Architectures:
+        - x86_64
+      Role: !GetAtt GetAnimalByIdLambdaRole.Arn
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref AnimalsDdbTable
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /animals/{animalId}
+            Method: get
+            RestApiId:
+              Ref: AnimalsApi
