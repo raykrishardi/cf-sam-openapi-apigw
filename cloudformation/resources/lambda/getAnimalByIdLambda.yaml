@@ -1,7 +1,7 @@
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: golambda/cmd/api/animals-by-id/
-      Handler: api
+      Handler: main
       Runtime: go1.x
       Architectures:
         - x86_64
