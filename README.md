@@ -27,3 +27,10 @@ name: Alligator
 ```
 curl https://<url>/Prod/animals/1
 ```
+
+### Build OpenAPI doc
+```
+npm i -g @openapitools/openapi-generator-cli
+make generateApiDoc
+open the apidocs/index.html file on your browser
+```
