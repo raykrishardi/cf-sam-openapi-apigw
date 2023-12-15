@@ -28,7 +28,12 @@ name: Alligator
 curl https://<url>/Prod/animals/1
 ```
 
-### Generate OpenAPI doc
+### Display OpenAPI yaml using swagger
+```
+docker run -d --name swagger-ui -p 8080:8080 -e SWAGGER_JSON=/api/api.yaml -v ./api:/api/ swaggerapi/swagger-ui
+```
+
+### Generate OpenAPI doc (response schema doesn't seem to get displayed, so use swagger UI instead)
 ```
 npm i -g @openapitools/openapi-generator-cli
 make generateApiDoc
