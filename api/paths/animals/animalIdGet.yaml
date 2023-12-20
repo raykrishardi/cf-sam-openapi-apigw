@@ -29,31 +29,8 @@ get:
           schema:
             $ref: '../../schemas/error.yaml'
   x-amazon-apigateway-integration:
-    requestTemplates:
-      "application/json": |
-            { "path": "$context.path",
-              "userArn": "$context.identity.userArn",
-              "animalId": "$method.request.path.animalId" }
-    passthroughBehavior: "never"
-    responses:
-      default:
-        statusCode: "200"
-        responseTemplates:
-          "application/json": |
-            #set($inputRoot = $input.path('$'))
-            #set($jsonBody = $util.parseJson($inputRoot.body))
-            {
-              "animalId": "$jsonBody.id",
-              "animalName": "$jsonBody.name"
-            }
-      NotFound.*:
-        $ref: "../../gatewayResponses/notAcceptable.yaml"
-      NotAcceptable.*:
-        $ref: "../../gatewayResponses/notFound.yaml"
-      .*error.*:
-        $ref: "../../gatewayResponses/error.yaml"
     uri:
       Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetAnimalByIdLambda.Arn}/invocations
     httpMethod: POST
-    type: "aws"
+    type: "aws_proxy"
   x-amazon-apigateway-request-validator: "all"

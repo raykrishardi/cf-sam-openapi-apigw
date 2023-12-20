@@ -1,4 +1,0 @@
-statusCode: "400"
-responseTemplates:
-  application/json: "#set ($root=$input.path('$')) { \"Error\": \"$root.errorMessage\" }"
-  text/*: "#set ($root=$input.path('$')) \"Error\": \"$root.errorMessage\" "

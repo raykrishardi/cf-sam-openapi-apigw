@@ -5,9 +5,11 @@ import (
 	"errors"
 	"io"
 	"net/http"
+
+	"github.com/aws/aws-lambda-go/events"
 )
 
-type ErrorJSONResponse struct {
+type JSONResponse struct {
 	Error   bool        `json:"error"`
 	Message string      `json:"message"`
 	Data    interface{} `json:"data,omitempty"`
@@ -63,9 +65,26 @@ func WriteErrorJSON(w http.ResponseWriter, err error, status ...int) error {
 		statusCode = status[0]
 	}
 
-	var payload ErrorJSONResponse
+	var payload JSONResponse
 	payload.Error = true
 	payload.Message = err.Error()
 
 	return WriteJSON(w, statusCode, payload)
+}
+
+func GetAPIGatewayErrorResponse(status int, err error) (events.APIGatewayProxyResponse, error) {
+	payload := JSONResponse{
+		Error:   true,
+		Message: err.Error(),
+	}
+
+	out, marshalErr := json.Marshal(payload)
+	if marshalErr != nil {
+		return events.APIGatewayProxyResponse{StatusCode: http.StatusInternalServerError, Body: marshalErr.Error()}, marshalErr
+	}
+
+	return events.APIGatewayProxyResponse{
+		StatusCode: status,
+		Body:       string(out),
+	}, nil
 }

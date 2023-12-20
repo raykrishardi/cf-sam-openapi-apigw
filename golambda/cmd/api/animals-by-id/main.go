@@ -1,11 +1,11 @@
 package main
 
 import (
-	"cf-sam-openapi-apigw/internal/entity"
 	"cf-sam-openapi-apigw/internal/pkg/utils"
 	"context"
 	"encoding/json"
-	"errors"
+	"fmt"
+	"net/http"
 	"os"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -21,7 +21,7 @@ var (
 	TABLE_NAME = os.Getenv("TABLE_NAME")
 )
 
-func handler(ctx context.Context, event entity.CustomAPIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+func handler(ctx context.Context, event events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	utils.InfoLog.Printf("event: %+v\n", event)
 
 	// Initialise app config
@@ -40,17 +40,17 @@ func handler(ctx context.Context, event entity.CustomAPIGatewayProxyRequest) (ev
 	// Get animal by ID
 	getAnimalInput := ddbuc.GetAnimalInput{
 		TableName: appConfig.TableName,
-		AnimalID:  event.AnimalID,
+		AnimalID:  event.PathParameters["animalId"],
 	}
 	getAnimalOutput, err := ddbUC.GetAnimalByID(ctx, getAnimalInput)
 	if err != nil {
-		return events.APIGatewayProxyResponse{}, errors.New("error: unable to get animal by ID")
+		return utils.GetAPIGatewayErrorResponse(http.StatusBadRequest, fmt.Errorf("error: unable to get animal ID, reason: %+v", err.Error()))
 	}
 	utils.InfoLog.Printf("getAnimalOutput: %+v\n", getAnimalOutput)
 
 	getAnimalOutputJSON, err := json.Marshal(getAnimalOutput)
 	if err != nil {
-		return events.APIGatewayProxyResponse{}, errors.New("error: unable to marshal getAnimalOutput")
+		return utils.GetAPIGatewayErrorResponse(http.StatusInternalServerError, err)
 	}
 
 	return events.APIGatewayProxyResponse{Body: string(getAnimalOutputJSON), StatusCode: 200}, nil
